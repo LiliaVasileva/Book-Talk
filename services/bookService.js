@@ -9,3 +9,5 @@ exports.getAllBooks = () => Book.find({}).lean();
 exports.getBook = (bookId) => Book.findById(bookId).lean();
 
 exports.delete = (bookId) => Book.findByIdAndDelete(bookId);
+
+exports.edit = (bookId, {title, author, image, review, genre, stars}) => Book.findByIdAndUpdate(bookId, {title, author, image, review, genre, stars});
