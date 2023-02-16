@@ -9,4 +9,8 @@ router.use(homeController);
 router.use(authController);
 router.use('/book', bookController);
 
+router.use('*', (req, res) => {
+    res.render('home/404')
+})
+
 module.exports = router;

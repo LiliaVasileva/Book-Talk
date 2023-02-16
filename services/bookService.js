@@ -7,3 +7,5 @@ exports.create = (userId, {title, author, genre, stars, image, review }) => Book
 exports.getAllBooks = () => Book.find({}).lean();
 
 exports.getBook = (bookId) => Book.findById(bookId).lean();
+
+exports.delete = (bookId) => Book.findByIdAndDelete(bookId);

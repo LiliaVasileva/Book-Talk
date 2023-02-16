@@ -46,4 +46,16 @@ router.get('/:bookId/details', async (req, res) =>{
 
 })
 
+router.get('/:bookId/delete', async (req, res)=> {
+    const bookId = req.params.bookId;
+
+    try{
+        await bookService.delete(bookId);
+    } catch {
+        res.status(404).redirect('home/404');
+    }
+
+    res.redirect('/book/catalog')
+})
+
 module.exports =router;
