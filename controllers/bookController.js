@@ -33,6 +33,17 @@ router.get('/catalog', async(req, res) => {
     const books = await bookService.getAllBooks();
 
     res.render('book/catalog', { books });
+});
+
+
+router.get('/:bookId/details', async (req, res) =>{
+
+    const book = await bookService.getBook(req.params.bookId);
+
+    const isOwner = book.owner == req.user?._id;
+
+    res.render('book/details', { book, isOwner })
+
 })
 
 module.exports =router;
