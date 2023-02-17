@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
   } catch (err) {
     return res
       .status(400)
-      .render('auth/register', { error: getErrorMessage(err) });
+      .render('auth/register', { email, username ,error: getErrorMessage(err) });
   }
 
 });

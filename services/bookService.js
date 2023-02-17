@@ -15,7 +15,27 @@ exports.edit = (bookId, {title, author, image, review, genre, stars}) => Book.fi
 exports.wishes = async (userId, bookId) => {
 
     const book = await Book.findById(bookId);
+
     book.wishList.push(userId);
-    
+
     return book.save();
 }
+
+
+exports.getWishedBooks = async (userId) => {
+
+    const allBooks = await Book.find({}).lean();
+    const books = [];
+
+    function findUserId(book) {
+
+        if (book.wishList?.some((id) => id == userId)){
+            books.push(book);
+        }
+        
+    }
+
+    allBooks.forEach(findUserId);
+
+    return books
+} 
