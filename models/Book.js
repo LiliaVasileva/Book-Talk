@@ -29,7 +29,7 @@ const bookSchema = new mongoose.Schema({
         min: 1,
         max: 5
     },
-    whishList: [{
+    wishList: [{
         type: mongoose.Types.ObjectId,
         ref: 'User'
     }],

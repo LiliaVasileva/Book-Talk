@@ -42,11 +42,13 @@ router.get('/:bookId/details', async (req, res) => {
 
     const isOwner = book.owner == req.user?._id;
 
-    res.render('book/details', { book, isOwner })
+    const isWished = book.wishList?.some((id) => id == req.user?._id);
+
+    res.render('book/details', { book, isOwner, isWished })
 
 })
 
-router.get('/:bookId/delete', async (req, res) => {
+router.get('/:bookId/delete',isAuth, async (req, res) => {
     const bookId = req.params.bookId;
 
     try {
@@ -59,14 +61,14 @@ router.get('/:bookId/delete', async (req, res) => {
 })
 
 
-router.get('/:bookId/edit', async (req, res) => {
+router.get('/:bookId/edit',isAuth, async (req, res) => {
 
     const book = await bookService.getBook(req.params.bookId);
 
     res.render('book/edit', { book })
 });
 
-router.post('/:bookId/edit', async (req, res) => {
+router.post('/:bookId/edit',isAuth,  async (req, res) => {
 
     const bookId = req.params.bookId;
     const {title, author, genre, stars, image, review} = req.body;
@@ -74,13 +76,24 @@ router.post('/:bookId/edit', async (req, res) => {
 
     try {
         await bookService.edit(bookId, {title, author, image, review, genre, stars});
+
         res.redirect(`/book/${req.params.bookId}/details`)
 
     } catch (error){
-        res.status(404).render('book/edit');
+
+        const book = await bookService.getBook(req.params.bookId);
+        res.status(404).render('book/edit', {book: book, error: getErrorMessage(error)});
     }
 
     
+});
+
+router.get('/:bookId/wish', isAuth, async (req, res) => {
+
+    await bookService.wishes(req.user._id, req.params.bookId);
+    console.log('inside');
+
+    res.redirect(`/book/${req.params.bookId}/details`);
 })
 
 module.exports = router;
